@@ -33,7 +33,12 @@ class doublylinkedlist {
 node* nodeexistwithkey(int key){
     node *temp=NULL;
     if(head!=NULL){
-        node*ptr=head;
+        if(head->key==key){
+             temp=head;
+            return temp;
+            }
+        else{
+        node*ptr=head->next;
         while(ptr!=NULL){
             if(ptr->key==key){
                 temp=ptr;
@@ -44,8 +49,9 @@ node* nodeexistwithkey(int key){
             }
         }
     }
+    }
     else{
-        cout<<"DLL is emtpy"<<endl;
+        return temp;
     }
 }
 void appendnode(node *n){
@@ -69,16 +75,21 @@ void appendnode(node *n){
     }
 }
 void prependnode(node *n){
-    if(head=NULL){
-        head=n;
-        cout<<"node prepended"<<endl;
+    if(nodeexistwithkey(n->key)!=NULL){
+        cout<<"sorry node with key "<<n->key<<"already exits please try with another key"<<endl;
     }
     else{
-         head->prev=n;
-         n->prev=NULL;
-         n->next=head;
-         head=n;
-         cout<<"node prepended"<<endl;
+        if(head==NULL){
+            head=n;
+            cout<<"node prepended successfully"<<endl;
+        }
+        else{
+            n->prev=NULL;
+            n->next=head;
+            head->prev=n;
+            head=n;
+            cout<<"node prepended successfully"<<endl;
+        }
     }
 }
 void insertafterkeynode(int key,node*n){
@@ -111,36 +122,36 @@ void deletnodewithkey(int key){
     if(head==NULL){
         cout<<"empty DLL"<<endl;
     }
-    else{
-        if(temp!=NULL){
-        prevptr=head;
-        nextptr=head->next;
+    else if(temp!=NULL){
         if(prevptr->key==key){
-            head=head->next;
-            head->prev=NULL;
+            prevptr->next->prev=NULL;
+            head=prevptr->next;
             delete prevptr;
-            cout<<"node with key"<<key<<"successfully deleted"<<endl;
+            cout<<"node link succesfully unlinked"<<endl;
+        }
+        else if(nextptr==temp){
+            prevptr->next=nextptr->next;
+            nextptr->next->prev=prevptr;
+            delete nextptr;
+            cout<<"node link succesfully unlinked"<<endl;
         }
         else{
-            while(nextptr!=NULL){
-                if(nextptr->key==key){
-                    prevptr->next=nextptr->next;
+            while(nextptr->next!=NULL){
+                prevptr=prevptr->next;
+                nextptr=nextptr->next;
+                if(nextptr==temp){
+                     prevptr->next=nextptr->next;
                     nextptr->next->prev=prevptr;
                     delete nextptr;
-                    cout<<"node with key"<<key<<"successfully deleted"<<endl;
-                }
-                else{
-                    prevptr=prevptr->next;
-                    nextptr=nextptr->next;
+                    cout<<"node link successfully unlinked"<<endl;
                 }
             }
         }
     }
-        else{
-            cout<<"node with key"<<key<<"doesnt exits"<<endl;
-        }
+    else{
+        cout<<"key with node does not exits so cannot delete"<<endl;
     }
-}
+    }
 
 void updatenodebykey(int key,int data){
     node*temp=nodeexistwithkey(key);
@@ -157,23 +168,19 @@ void updatenodebykey(int key,int data){
         }
     }
 }
-
 void display(){
-    if(head==NULL){
-        cout<<"empty linked list nothing to display"<<endl;
-    }
-    else{
+    if(head!=NULL){
         node *ptr=head;
-        cout<<"singly Linked list values:"<<endl;
         while(ptr!=NULL){
             cout<<"("<<ptr->key<<","<<ptr->data<<")-->";
             ptr=ptr->next;
         }
     }
-}
-
+    else{
+        cout<<"empty DLL nothing to display"<<endl;
+    }
 };
-int main(){     
+int main(){   
     doublylinkedlist d;
     int option;
     int key;
@@ -263,5 +270,7 @@ int main(){
         }
     }
         }while(option!=0);
-return 0;
+
+    return 0;
 }
+
