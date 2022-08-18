@@ -1,6 +1,7 @@
 #include <iostream>
 #include <string.h>
 using namespace std;
+// recursive method to check array is sorted or not
 bool checksorted(int array[],int n){
         if(n==0 || n==1){
             return true;
@@ -14,6 +15,19 @@ bool checksorted(int array[],int n){
             }
         }
 }
+//iterative method to check whether the aray is sorted or not
+// bool checksorted(int array[],int n){
+//         if(n==0 || n==1){
+//             return true;
+//         }
+//             for(int i=0;i<sizeof(array);i++){
+//                 if(array[i]>array[i+1]){
+//                     return false;
+//                 }
+//             }
+//         return true;
+
+// }
 int binarysearch(int array[],int low,int high,int element){
         int mid=(low+high)/2;
         if(sizeof(array)>=1){
